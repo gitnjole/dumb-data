@@ -18,18 +18,33 @@ The application follows a layered architecture with clear separation of concerns
 
 ## Setup
 
+### Build from docker
 1. Clone the repository
-2. Install dependencies:
-   ```
-   pip install -r requirements.txt
-   ```
-3. Create a `.env` file based on `.env.example`:
+2. Create a `.env` file based on `.env.example`:
    ```
    API_KEY=your_lastfm_api_key
    API_SECRET=your_lastfm_api_secret
    LASTFM_USERNAME=your_lastfm_username
    LASTFM_PASSWORD=your_lastfm_password
    ```
+3. Run `docker compose build`
+4. Start docker
+`docker compose up -d`
+
+### Local setup
+1. Clone the repository
+2. Create a `.env` file based on `.env.example`:
+   ```
+   API_KEY=your_lastfm_api_key
+   API_SECRET=your_lastfm_api_secret
+   LASTFM_USERNAME=your_lastfm_username
+   LASTFM_PASSWORD=your_lastfm_password
+   ```
+3. Install dependencies:
+   ```
+   pip install -r requirements.txt
+   ```
+
 
 ## Usage
 
