@@ -1,0 +1,24 @@
+services:
+  web:
+    build: .
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+    environment:
+      - DATABASE_URL=postgresql://postgres:password@db:5432/lastfm
+      - LASTFM_USERNAME=${LASTFM_USERNAME}
+      - LASTFM_PASSWORD=${LASTFM_PASSWORD}
+      - API_KEY=${API_KEY}
+      - API_SECRET=${API_SECRET}
+  db:
+    image: postgres:15
+    restart: always
+    environment:
+      POSTGRES_DB: lastfm
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+volumes:
+  pgdata:
