@@ -8,11 +8,26 @@ logger = logging.getLogger(__name__)
 
 
 class LastFmService:
+    """
+    Service for fetching data from LastFM.
+    """
+
     def __init__(self, network: pylast.LastFMNetwork):
+        """
+        network: an instance of pylast.LastFMNetwork containing authorised
+        user data.
+
+        You should obtain a preconfigured network object through a
+        Depends(get_lastfm_network) method instead of creating an object
+        of this class, unless you know what you're doing.
+        """
         self.network = network
+
 
     def get_scrobbles(self, limit: int):
         user = self.network.get_user(settings.LASTFM_USERNAME)
+
+        # Currently all business logic contained within this try block.
         try:
             scrobbles = user.get_recent_tracks(limit=limit)
             if not scrobbles:
