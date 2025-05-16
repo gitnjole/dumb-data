@@ -3,3 +3,5 @@ uvicorn[standard]
 pylast
 python-dotenv
 pydantic
+sqlalchemy
+psycopg2-binary
