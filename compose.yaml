@@ -4,7 +4,8 @@ services:
     ports:
       - "8000:8000"
     depends_on:
-      - db
+      db:
+        condition: service_healthy
     environment:
       - DATABASE_URL=postgresql://postgres:password@db:5432/lastfm
       - LASTFM_USERNAME=${LASTFM_USERNAME}
