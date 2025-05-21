@@ -14,11 +14,10 @@ The application follows a layered architecture with clear separation of concerns
 - **Business Layer**: Business logic processing
 - **Client Layer**: Interaction with external LastFM API
 - **Models**: Data transfer objects
-- ~~**Persistence**: Database interaction layer~~ (Not yet implemented!)
+- **Persistence**: Database interaction layer
 
 ## Setup
 
-### Build from docker
 1. Clone the repository
 2. Create a `.env` file based on `.env.example`:
    ```
@@ -26,31 +25,51 @@ The application follows a layered architecture with clear separation of concerns
    API_SECRET=your_lastfm_api_secret
    LASTFM_USERNAME=your_lastfm_username
    LASTFM_PASSWORD=your_lastfm_password
+
+   DATABASE_URL=postgresql://your_user:your_password@db:5432/your_db
+   POSTGRES_DB=your_db
+   POSTGRES_USER=your_user
+   POSTGRES_PASSWORD=your_password
    ```
-3. Run `docker compose build`
-4. Start docker
-`docker compose up -d`
+
+## Docker usage
+
+### Baked image
+
+```bash
+docker compose -f compose.yaml up --build -d
+```
+This setup uses a persistent volume for the Postgres data (pgdata), so data will persist across restarts, but any code changes will require re-baking the image.
+
+### Development setup
+
+```bash
+docker compose -f compose.yaml -f dev.compose.yaml up --build -d
+```
+This starts ther app with `uvicorn --reload` and maps local source code into the container. Changes are reflected in real time.
 
 ### Local setup
-1. Clone the repository
-2. Create a `.env` file based on `.env.example`:
-   ```
-   API_KEY=your_lastfm_api_key
-   API_SECRET=your_lastfm_api_secret
-   LASTFM_USERNAME=your_lastfm_username
-   LASTFM_PASSWORD=your_lastfm_password
-   ```
-3. Install dependencies:
-   ```
+1. Install dependencies:
+   ```bash
    pip install -r requirements.txt
    ```
+2. Ensure Postgres is running and `DATABASE_URL` is configured.
+3. Apply database migrations:
+   ```bash
+   alembic upgrade head
+   ```
+4. Start the app:
+   ```bash
+   uvicorn app.main:app -reload
+   ```
 
+## Database migrations
 
-## Usage
+Alembic is used for schema migrations. Migration scripts are committed under `alembic/versions`.
 
-Start the application:
-```
-uvicorn app.main:app --reload
+To generate a new migration after schema changes:
+```bash
+alembic revision --autogenerate -m "message"
 ```
 
 ### Endpoints
@@ -61,14 +80,18 @@ uvicorn app.main:app --reload
 
 ## Development Roadmap
 
-- Implement persistence layer
+- ~~Implement persistence layer~~
 - Expand models as DTOs between layers
 - Write test suite
-- Create Dockerfile for containerization
+- ~~Create Dockerfile for containerization~~
 
 ## Dependencies
 
-- FastAPI
-- pylast
-- python-dotenv
-- Pydantic
+-fastapi\
+-uvicorn\
+-pylast\
+-python-dotenv\
+-pydantic\
+-sqlalchemy\
+-alembic\
+-psycopg2-binary
