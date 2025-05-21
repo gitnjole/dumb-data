@@ -3,10 +3,10 @@ from typing import Optional
 
 class Scrobble(BaseModel):
     track_id: str
-    title: str
+    track: str
     artist: str
     album: Optional[str] = None
-    timestamp: str
+    playback_date: str
 
 class ScrobbleResponse(BaseModel):
     scrobbles: list[Scrobble]
