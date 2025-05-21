@@ -7,11 +7,16 @@ class LastFMPersistence:
         self.db = SessionLocal()
 
     def save_scrobble(self, scrobble: Scrobble):
-        db_obj = ScrobbleORM(**scrobble.model_dump())
-        self.db.add(db_obj)
-        self.db.commit()
-        self.db.refresh(db_obj)
-        return db_obj
+        try:
+            db_obj = ScrobbleORM(**scrobble.model_dump())
+            self.db.add(db_obj)
+            self.db.commit()
+            self.db.refresh(db_obj)
+            return db_obj
+        except Exception as e:
+            print(f"Error saving scrobble: {e}")
+            self.db.rollback()
+            raise
     
     def list_scrobbles(self):
         return self.db.query(ScrobbleORM).all()
