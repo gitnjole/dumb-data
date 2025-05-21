@@ -1,13 +1,15 @@
 services:
   web:
-    build: .
+    build:
+      context: .
+      dockerfile: docker/Dockerfile
     ports:
       - "8000:8000"
     depends_on:
       db:
         condition: service_healthy
     environment:
-      - DATABASE_URL=postgresql://postgres:password@db:5432/lastfm
+      - DATABASE_URL=${DATABASE_URL}
       - LASTFM_USERNAME=${LASTFM_USERNAME}
       - LASTFM_PASSWORD=${LASTFM_PASSWORD}
       - API_KEY=${API_KEY}
