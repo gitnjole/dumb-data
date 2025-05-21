@@ -12,7 +12,7 @@ class ScrobbleORM(Base):
     # Artist object methods to consider:
     # - artist.get_bio(), artist.get_top_albums(), artist.get_top_tracks()
     id = Column(Integer, primary_key=True, index=True)
-    track_id = Column(Integer)
+    track_id = Column(String)
     track = Column(String)
     artist = Column(String)
     album = Column(String, nullable=True)
