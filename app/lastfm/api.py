@@ -16,5 +16,4 @@ async def get_scrobbles(
 ):
     client = LastFMClient(network)
     business = LastFMBusiness(client=client, username=network.username)
-    scrobbles = business.fetch_scrobbles(limit=limit)
-    return {"scrobbles": scrobbles}
+    return business.fetch_scrobbles(limit=limit)
