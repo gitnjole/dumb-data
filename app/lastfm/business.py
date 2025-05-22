@@ -1,5 +1,5 @@
 from app.lastfm.client import LastFMClient
-from app.models.lastfm_models import Scrobble
+from app.models.lastfm_models import ScrobbleTransfer
 
 
 class LastFMBusiness:
@@ -7,16 +7,15 @@ class LastFMBusiness:
         self.client = client
         self.username = username
 
-    def fetch_scrobbles(self, limit: int = None):
+    def fetch_scrobbles(self, limit: int = None)-> ScrobbleTransfer:
         raw_tracks = self.client.get_recent_tracks(self.username, limit=limit)
 
         return [
-            Scrobble(
-                track_id=str(track.playback_date),
-                title=track.track.title,
-                artist=track.track.artist.name,
-                album=track.album if track.album else None,
-                timestamp=str(track.playback_date),
+            ScrobbleTransfer(
+                track=played.track.title,
+                artist=played.track.artist.name,
+                album=played.album if played.album else None,
+                playback_date=played.playback_date,
             )
-            for track in raw_tracks
+            for played in raw_tracks
         ]

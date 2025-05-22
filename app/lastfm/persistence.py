@@ -1,12 +1,12 @@
 from app.core.database import SessionLocal
 from app.lastfm.models.sql_models import ScrobbleORM
-from app.models.lastfm_models import Scrobble
+from app.models.lastfm_models import ScrobbleTransfer
 
 class LastFMPersistence:
     def __init__(self):
         self.db = SessionLocal()
 
-    def save_scrobble(self, scrobble: Scrobble):
+    def save_scrobble(self, scrobble: ScrobbleTransfer):
         try:
             db_obj = ScrobbleORM(**scrobble.model_dump())
             self.db.add(db_obj)
