@@ -78,12 +78,32 @@ alembic revision --autogenerate -m "message"
   - Query parameters:
     - `limit`: Optional. Maximum number of scrobbles to return
 
+## Known Issues
+
+- Business layer does not interact with persistence layer
+
+This is intentional while I'm rewriting the persistence and business layers, methods are implemented but not connected yet.
+
+- Timestamps aren't being persisted
+
+Timestamps are returned in the following format: 
+`playback_date	"20 May 2025, 17:56"`\
+This will be addressed along with the expanded transfer models update.
+
 ## Development Roadmap
 
-- ~~Implement persistence layer~~
-- Expand models as DTOs between layers
-- Write test suite
+#### 0.3.0
 - ~~Create Dockerfile for containerization~~
+- ~~Implement persistence layer~~
+
+#### 0.4.0
+- Expand models as DTOs between layers
+- Break down the repository layer into modules
+- Break down the business layer into modules
+
+#### 0.?.?
+- Write test suite
+- Implement Importer service
 
 ## Dependencies
 
