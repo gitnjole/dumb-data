@@ -11,4 +11,3 @@ class ScrobbleORM(Base):
     album = Column(String, nullable=True)
     playback_date = Column(DateTime)
     timestamp = Column(DateTime)
-
