@@ -1,12 +1,11 @@
 from pydantic import BaseModel
 from typing import Optional
 
-class Scrobble(BaseModel):
-    track_id: str
+class ScrobbleTransfer(BaseModel):
     track: str
     artist: str
     album: Optional[str] = None
     playback_date: str
 
-class ScrobbleResponse(BaseModel):
-    scrobbles: list[Scrobble]
+class ScrobbleCollectionTransfer(BaseModel):
+    scrobbles: list[ScrobbleTransfer]
