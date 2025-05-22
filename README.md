@@ -97,9 +97,10 @@ This will be addressed along with the expanded transfer models update.
 - ~~Implement persistence layer~~
 
 #### 0.4.0
-- Expand models as DTOs between layers
-- Break down the repository layer into modules
-- Break down the business layer into modules
+- ~~Expand models as DTOs between layers~~
+- ~~Persist timestamps~~
+- (pushed back)Break down the repository layer into modules
+- (pushed back)Break down the business layer into modules
 
 #### 0.?.?
 - Write test suite
