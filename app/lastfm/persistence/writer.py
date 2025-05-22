@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from app.core.database import SessionLocal
 from app.lastfm.models.sql_models import ScrobbleORM
 from app.models.lastfm_models import ScrobbleTransfer, ScrobbleCollectionTransfer
@@ -8,7 +10,8 @@ class ScrobbleWriter(ScrobbleWriterInterface):
         self.db = SessionLocal()
 
     def save(self, scrobble: ScrobbleTransfer) -> ScrobbleCollectionTransfer:
-        db_obj = ScrobbleORM(**scrobble.model_dump())
+        scrobble_prepared = self._insert_timestamp_scrobble(scrobble)
+        db_obj = ScrobbleORM(**scrobble_prepared)
 
         try:
             self.db.add(db_obj)
@@ -20,7 +23,8 @@ class ScrobbleWriter(ScrobbleWriterInterface):
             raise
     
     def save_collection(self, scrobbles: ScrobbleCollectionTransfer) -> None:
-        db_objects = [ScrobbleORM(**s.model_dump()) for s in scrobbles.scrobbles]
+        collection_prepared = self._insert_timestamp_collection(scrobbles)
+        db_objects = [ScrobbleORM(**s) for s in collection_prepared]
 
         try:
             self.db.add_all(db_objects)
@@ -28,3 +32,10 @@ class ScrobbleWriter(ScrobbleWriterInterface):
         except Exception as e:
             self.db.rollback()
             raise
+        
+    def _insert_timestamp_scrobble(self, scrobble: ScrobbleTransfer) -> dict:
+        return {**scrobble.model_dump(), 'timestamp': datetime.now()}
+    
+    def _insert_timestamp_collection(self, collection: ScrobbleCollectionTransfer) -> list[dict]:
+        timestamp = datetime.now()
+        return [{**s.model_dump(), 'timestamp': timestamp} for s in collection.scrobbles]
