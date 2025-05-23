@@ -1,13 +1,12 @@
 from datetime import datetime
-
-from app.core.database import SessionLocal
 from app.lastfm.models.sql_models import ScrobbleORM
 from app.models.lastfm_models import ScrobbleTransfer, ScrobbleCollectionTransfer
 from .repository import ScrobbleWriterInterface
+from sqlalchemy.orm import Session
 
 class ScrobbleWriter(ScrobbleWriterInterface):
-    def __init__(self):
-        self.db = SessionLocal()
+    def __init__(self, db: Session):
+        self.db = db
 
     def save(self, scrobble: ScrobbleTransfer) -> ScrobbleCollectionTransfer:
         scrobble_prepared = self._insert_timestamp_scrobble(scrobble)

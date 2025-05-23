@@ -2,15 +2,15 @@ from app.lastfm.client import LastFMClient
 from app.models.lastfm_models import ScrobbleTransfer, ScrobbleCollectionTransfer
 from app.lastfm.persistence.writer import ScrobbleWriter
 from app.lastfm.persistence.reader import ScrobbleReader
-
 from app.core.datetime_utils import parse_playback_date
+from sqlalchemy.orm import Session
 
 class LastFMBusiness:
-    def __init__(self, client: LastFMClient, username: str):
+    def __init__(self, client: LastFMClient, username: str, db: Session):
         self.client = client
         self.username = username
-        self.writer = ScrobbleWriter()
-        self.reader = ScrobbleReader()
+        self.writer = ScrobbleWriter(db)
+        self.reader = ScrobbleReader(db)
 
     def fetch_scrobbles(self, limit: int = None)-> ScrobbleCollectionTransfer:
         raw_tracks = self.client.get_recent_tracks(self.username, limit=limit)

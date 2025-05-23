@@ -1,11 +1,11 @@
-from app.core.database import SessionLocal
 from app.lastfm.models.sql_models import ScrobbleORM
 from app.models.lastfm_models import ScrobbleTransfer, ScrobbleCollectionTransfer
 from .repository import ScrobbleRepositoryInterface
+from sqlalchemy.orm import Session
 
 class ScrobbleReader(ScrobbleRepositoryInterface):
-    def __init__(self):
-        self.db = SessionLocal()
+    def __init__(self, db: Session):
+        self.db = db
 
     def find_by_name(self, name: str) -> ScrobbleTransfer:
         result = self.db.query(ScrobbleORM).filter(ScrobbleORM.track == name).all()
