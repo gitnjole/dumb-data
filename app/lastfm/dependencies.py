@@ -1,5 +1,10 @@
 import pylast
+from fastapi import Depends
+from sqlalchemy.orm import Session
 from app.core.config import settings
+from app.core.database import get_db
+from app.lastfm.client import LastFMClient
+from app.lastfm.business import LastFMBusiness
 
 class LastFmNetworkManager:
     def __init__(self):
@@ -31,3 +36,10 @@ async def get_lastfm_network():
     Returns an authenticated LastFM network.
     """
     return _lastfm_manager.get_network()
+
+def get_lastfm_business(
+        network: pylast.LastFMNetwork = Depends(get_lastfm_network),
+        db: Session = Depends(get_db)
+) -> LastFMBusiness:
+    client = LastFMClient(network)
+    return LastFMBusiness(client=client, username=network.username, db=db)
