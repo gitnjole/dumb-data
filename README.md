@@ -84,11 +84,9 @@ alembic revision --autogenerate -m "message"
 
 This is intentional while I'm rewriting the persistence and business layers, methods are implemented but not connected yet.
 
-- Timestamps aren't being persisted
+- Data Transfer objects are coupled with persistence logic
 
-Timestamps are returned in the following format: 
-`playback_date	"20 May 2025, 17:56"`\
-This will be addressed along with the expanded transfer models update.
+This was a conscious decision, might consider creating a utility for this.
 
 ## Development Roadmap
 
@@ -101,6 +99,10 @@ This will be addressed along with the expanded transfer models update.
 - ~~Persist timestamps~~
 - (pushed back)Break down the repository layer into modules
 - (pushed back)Break down the business layer into modules
+
+#### 0.4.1
+- Fix datbase connection concerns
+- Implement custom exceptions
 
 #### 0.?.?
 - Write test suite
