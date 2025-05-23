@@ -23,3 +23,7 @@ class ScrobbleTransfer(BaseModel):
 
 class ScrobbleCollectionTransfer(BaseModel):
     scrobbles: list[ScrobbleTransfer]
+
+class ScrobbleResponseTransfer(BaseModel):
+    is_successful: bool
+    message: Optional[str] = None
