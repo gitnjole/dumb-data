@@ -1,5 +1,6 @@
 from app.lastfm.client import LastFMClient
-from app.models.lastfm_models import ScrobbleTransfer, ScrobbleCollectionTransfer
+from app.models.lastfm_models import ScrobbleTransfer, ScrobbleCollectionTransfer, ScrobbleResponseTransfer
+from app.lastfm.exceptions import ScrobblePersistenceError
 from app.lastfm.persistence.writer import ScrobbleWriter
 from app.lastfm.persistence.reader import ScrobbleReader
 from app.core.datetime_utils import parse_playback_date
@@ -31,5 +32,12 @@ class LastFMBusiness:
 
         return collection
     
-    def _persist_scrobbles(self, scrobbles: ScrobbleCollectionTransfer):
-        self.writer.save_collection(scrobbles)
+    def _persist_scrobbles(self, scrobbles: ScrobbleCollectionTransfer) -> None:
+        response = self.writer.save_collection(scrobbles)
+
+        if not response.is_successful:
+            message = "; ".join(
+                msg.message for msg in response.message or []
+            )
+            raise ScrobblePersistenceError(message)
+        

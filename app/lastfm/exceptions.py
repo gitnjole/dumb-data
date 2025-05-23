@@ -1,0 +1,2 @@
+class ScrobblePersistenceError(Exception):
+    pass
