@@ -32,9 +32,9 @@ class ScrobbleWriter(ScrobbleWriterInterface):
             self.db.rollback()
             raise
         
-    def _insert_timestamp_scrobble(self, scrobble: ScrobbleTransfer) -> dict:
-        return {**scrobble.model_dump(), 'timestamp': datetime.now()}
-    
-    def _insert_timestamp_collection(self, collection: ScrobbleCollectionTransfer) -> list[dict]:
-        timestamp = datetime.now()
-        return [{**s.model_dump(), 'timestamp': timestamp} for s in collection.scrobbles]
+    def _insert_timestamp_scrobble(self, scrobble: ScrobbleTransfer) -> ScrobbleORM:
+        return scrobble.insert_timestamp()
+        
+    def _insert_timestamp_collection(self, collection: ScrobbleCollectionTransfer) -> list[ScrobbleORM]:
+        ts = datetime.now()
+        return [s.insert_timestamp() for s in collection.scrobbles]
