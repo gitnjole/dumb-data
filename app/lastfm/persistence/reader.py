@@ -11,7 +11,7 @@ class ScrobbleReader(ScrobbleRepositoryInterface):
         result = self.db.query(ScrobbleORM).filter(ScrobbleORM.track == name).all()
         if not result:
             return None
-        return ScrobbleTransfer.model_validate(result.__dict__)
+        return self._extract_to_transfer(result)
 
     def find_all(self, limit: int = None) -> ScrobbleCollectionTransfer:
         query = self.db.query(ScrobbleORM)
@@ -20,7 +20,7 @@ class ScrobbleReader(ScrobbleRepositoryInterface):
         results = query.all()
 
         return ScrobbleCollectionTransfer(
-            scrobbles=[ScrobbleTransfer.model_validate(r.__dict__) for r in results]
+            scrobbles=[self._extract_to_transfer(r) for r in results]
         )
 
     def find_by_recent_timestamp(self, timestamp) -> ScrobbleTransfer:
